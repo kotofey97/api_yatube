@@ -23,6 +23,7 @@ class PostViewSet(viewsets.ModelViewSet):
             raise PermissionDenied('Удаление чужого контента запрещено!')
         super(PostViewSet, self).perform_destroy(serializer)
 
+
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
@@ -33,10 +34,10 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
 
     def get_queryset(self):
-        post = get_object_or_404(Post, pk = self.kwargs.get('post_id'))
+        post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
         return post.comments.all()
 
-    def perform_create(self, serializer): 
+    def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
     def perform_update(self, serializer):
